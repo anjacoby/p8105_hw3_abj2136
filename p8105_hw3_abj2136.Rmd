@@ -1,0 +1,45 @@
+---
+title: "p8105_hw3_abj2136"
+output: github_document
+date: "2026-10-16"
+---
+
+### loading libraries
+```{r message = FALSE}
+library(tidyverse)
+library(readr)
+
+```
+
+# Problem 2
+
+## loading and cleaning the demographics data
+
+```{r message = FALSE}
+demo_df = read_csv("nhanes_covar.csv",
+                   na = c("", ".", "NA"),
+                   skip = 4) |> 
+  janitor::clean_names() |> 
+  drop_na() |> 
+  filter(age >= 21) |> 
+  mutate(
+    education = recode_values(education, 1 ~ "less than high school",
+                              2 ~ "high school equivalent", 3 ~ "more than high school"),
+    education = factor(education, 
+                       levels = c("less than high school",
+                                  "high school equivalent",
+                                  "more than high school")),
+    sex = recode_values(sex, 1 ~ "male", 2 ~ "female"),
+    sex = as.factor(sex)
+  )
+
+```
+
+## loading and cleaning the accelerometer data
+```{r}
+
+accel_df = read_csv("nhanes_accel.csv")
+
+
+```
+
