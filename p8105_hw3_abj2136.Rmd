@@ -104,6 +104,37 @@ Within the high school equivalent education group the women have a notably highe
 median age than men, while in the other education groups men and women have a 
 similar median age.
 
+## aggregated minutes
+
+```{r}
+combined_accel |> 
+  group_by(seqn, sex, age, education) |> 
+  summarize(total_mims = sum(mims_value)) |> 
+  ggplot(aes(x = age, y = total_mims, color = sex)) +
+  geom_point(alpha = .5) +
+  geom_smooth(se = FALSE) +
+  facet_grid(. ~ education) +
+  labs(
+    title = "Total daily activity by age, sex, and education",
+    x = "Age (years)",
+    y = "Total Activity by Monitor Indepedent Movement Summary (MIMS)"
+  )
+  
+  
+```
+
+Across all three education levels, total activity decreases as age increases.
+There is a steeper decrease among those with less than a high school education,
+while the other two education groups have flatter slopes. Among those with less
+than a high school education there is a slight increase in activity around those 
+aged 60, among those with a high school equivalent there is an increase in 
+activity from those aged 20 to those aged 40 (most notable among women), and 
+then activity decreases, and among those with more than a high school education 
+total activity generally decreases from 20 to 80, with a small bump among men 
+aged 50 and women aged 60. Generally among education groups, men and women 
+follow a similar pattern, but among those with less than a high school education 
+the men typically have higher total activity (after age 40), while women have 
+higher total activity among the other two education groups.
 
 
 
