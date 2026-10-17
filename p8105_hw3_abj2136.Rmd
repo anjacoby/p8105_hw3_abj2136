@@ -225,6 +225,52 @@ data set includes all the variables from each individual file, plus a month
 and year variable to distinguish which file it came from. The variables are:
 `r names(total_citi)`. There are `r nrow(total_citi)` total observations.
 
+## total rides per time period
+
+```{r}
+
+total_citi |> 
+  count(year, month, member_casual) |> 
+  pivot_wider(
+    names_from = member_casual,
+    values_from = n
+  ) |> 
+  knitr::kable()
+
+```
+
+There are more rides in January 2024 compared to January 2020, and there are
+more rides in July 2024 compared to July 2020. Within each year, there more 
+rides in July compared to January, which makes sense as it is warmer in July
+so people are more likely to choose an outdoor form of transportation.
+Citi bike memberships also appear to have become more popular 
+over time, as the number of member rides also increased from Jan 2020 to July 
+2024. There is an increase of about 20,000 member rides from Jan 2024 to July 
+2024 compared to an increase of about 9,000 among casual rides in that same time
+period.
+
+
+## 5 most popular starting stations
+
+```{r}
+
+total_citi |> 
+  filter(year == 2024, month == "July") |> 
+  count(start_station_name,) |> 
+  arrange(desc(n)) |> 
+  slice_head(n = 5) |> 
+  knitr::kable(col.names = c("Starting Station", "Number of Rides"))
+
+
+```
+
+
+
+
+
+
+
+
 
 
 
