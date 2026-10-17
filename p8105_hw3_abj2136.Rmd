@@ -265,6 +265,32 @@ total_citi |>
 ```
 
 
+## plot of median ride duration
+
+```{r}
+total_citi |> 
+  group_by(weekdays, month, year) |> 
+  summarize(median_duration = median(duration)) |> 
+  ggplot(aes(x = weekdays, y = median_duration, color = month, group = month )) +
+  geom_point() +
+  geom_line() +
+  facet_grid(. ~ year) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
+
+```
+
+
+From these plots, it appears the median duration of rides has decreased from
+2020 to 2024 in both January and July. The higher ride durations on 2020, 
+especially during July may be due to the height of the Covid-19 pandemic, 
+where people were less liekly to be in enclosed spaces like the subway with 
+other people, so biking was preferred and safer. In both years, the median ride 
+duration is longer in July than January, which may be due to the warmer 
+temperatures in July encouraging people to take outdoor transportation.
+Median ride length is relatively constant across Monday-Friday (people may take
+shorter rides to commute to/from work), while the ride length increases during
+the weekend for all months except January 2024.
+
 
 
 
