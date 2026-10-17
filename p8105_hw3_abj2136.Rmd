@@ -165,6 +165,65 @@ peaks between 8-10 am and then remains relatively constant until hour 20 (8 pm),
 then it decreases to about the same level as hour 0. This makes sense, as people 
 are sleeping in the overnight and moving around during the day. 
 
+# Problem 3
+
+## importing and cleaning datasets
+
+```{r message = FALSE}
+
+# Jan 2020
+
+jan_2020_citi = read_csv("citibike/Jan 2020 Citi.csv",
+                         na = c("", ".", "NA")) |> 
+  janitor::clean_names() |> 
+  mutate(year = 2020, month = "January")
+
+# Jan 2024
+
+jan_2024_citi = read_csv("citibike/Jan 2024 Citi.csv",
+                         na = c("", ".", "NA")) |> 
+  janitor::clean_names() |> 
+  mutate(year = 2024, month = "January")
+
+# July 2020
+
+july_2020_citi = read_csv("citibike/July 2020 Citi.csv",
+                          na = c("", ".", "NA")) |> 
+  janitor::clean_names() |> 
+  mutate(year = 2020, month = "July")
+
+# July 2024
+
+july_2024_citi = read_csv("citibike/July 2024 Citi.csv",
+                          na = c("", ".", "NA")) |> 
+  janitor::clean_names() |> 
+  mutate(year = 2024, month = "July")
+
+```
+
+## combining data sets 
+
+```{r}
+
+total_citi = bind_rows(jan_2020_citi, jan_2024_citi, july_2020_citi, july_2024_citi) |> 
+  mutate(
+    weekdays = factor(weekdays,
+                levels = c("Monday", "Tuesday", "Wednesday", "Thursday",
+                           "Friday", "Saturday", "Sunday")),
+    month = factor(month,
+                   levels = c("January", "July")),
+    member_casual = as.factor(member_casual),
+    rideable_type = as.factor(rideable_type)
+    ) |> 
+  relocate(year, month)
+
+```
+
+Rather than merge all four data sets, I binded the rows because all the data 
+sets contain the same variables, just from different time points. The resulting
+data set includes all the variables from each individual file, plus a month
+and year variable to distinguish which file it came from. The variables are:
+`r names(total_citi)`. There are `r nrow(total_citi)` total observations.
 
 
 
