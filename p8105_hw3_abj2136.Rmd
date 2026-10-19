@@ -141,8 +141,8 @@ higher total activity among the other two education groups.
 ```{r}
 combined_accel |> 
   ggplot(aes(x = minute, y = mims_value, color = sex)) +
-  geom_point(alpha = .5, size = .5) +
-  geom_smooth(aes(linetype = sex), se = FALSE, color = "black") +
+  geom_line(aes(group = seqn), alpha = .15, size = .25) +
+  geom_smooth(se = FALSE, linewidth = 2) +
   facet_grid(. ~ education) +
   scale_x_continuous(
     breaks = c(240, 480, 720, 960, 1200, 1440),
@@ -297,17 +297,16 @@ the weekend for all months except January 2024.
 
 total_citi |> 
   filter(year == 2024) |> 
-  mutate(log_ride = log(duration)) |> 
-  ggplot(aes(x = member_casual, y = log_ride, fill = rideable_type)) +
+  ggplot(aes(x = member_casual, y = duration, fill = rideable_type)) +
   geom_boxplot() + 
   facet_grid(. ~ month) +
+  scale_y_continuous(trans = "log10") +
   labs(
     title = "Ride Duration by bike type, membership, and month in 2024",
     x = "Rider Type",
-    y = "Ride Duration (minutes, log transformed)",
+    y = "Ride Duration (minutes)",
     fill = "Bike Type"
   )
-  
   
 
 ```
